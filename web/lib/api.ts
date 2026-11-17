@@ -16,8 +16,10 @@ export async function evaluateResume(file: File, jobDescription: string): Promis
   const timeout = window.setTimeout(() => controller.abort(), 180_000);
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
-    const endpoint = `${apiUrl ?? "http://localhost:8001"}/api/v1/evaluate`;
+    const apiUrl = process.env.NODE_ENV === "development"
+      ? (process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "http://localhost:8001")
+      : "https://api-nu-one-20.vercel.app";
+    const endpoint = `${apiUrl}/api/v1/evaluate`;
     const response = await fetch(endpoint, {
       method: "POST",
       body,
