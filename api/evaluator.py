@@ -2,7 +2,10 @@ import json
 
 from groq import Groq, GroqError
 
-from .schemas import MatchResult
+try:
+    from .schemas import MatchResult
+except ImportError:
+    from schemas import MatchResult
 
 SYSTEM_PROMPT = """You are an expert recruiter and ATS optimization specialist.
 Evaluate a resume against a target job description. Be evidence-based and concise.

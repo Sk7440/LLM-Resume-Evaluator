@@ -1,10 +1,16 @@
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from .evaluator import evaluate_resume
-from .parser import extract_resume_text
-from .schemas import MatchResult
-from .settings import get_settings
+try:
+    from .evaluator import evaluate_resume
+    from .parser import extract_resume_text
+    from .schemas import MatchResult
+    from .settings import get_settings
+except ImportError:
+    from evaluator import evaluate_resume
+    from parser import extract_resume_text
+    from schemas import MatchResult
+    from settings import get_settings
 
 settings = get_settings()
 app = FastAPI(title="Resume Match Evaluator", version="1.0.0")

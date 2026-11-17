@@ -42,6 +42,4 @@ Add this Vercel environment variable:
 NEXT_PUBLIC_API_URL=https://YOUR-API-DOMAIN.example.com
 ```
 
-Deploy `api` as a separate FastAPI service with `uvicorn api.main:app --host 0.0.0.0 --port $PORT`, and configure `GROQ_API_KEY`, `GROQ_MODEL`, and `FRONTEND_ORIGIN` there. Set `FRONTEND_ORIGIN` to the exact Vercel URL. The deployed frontend cannot call a backend running on localhost.
-
-For Render, use the included `render.yaml` Blueprint. Render will ask for the secret `GROQ_API_KEY` privately during service creation.
+Deploy `api` as a separate Vercel project. Set its Root Directory to `api`, then add `GROQ_API_KEY`, `GROQ_MODEL`, and `FRONTEND_ORIGIN` as Vercel environment variables. Set `FRONTEND_ORIGIN` to the exact Vercel frontend URL. The deployed frontend cannot call a backend running on localhost.
