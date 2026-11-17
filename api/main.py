@@ -10,7 +10,7 @@ settings = get_settings()
 app = FastAPI(title="Resume Match Evaluator", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_origin],
+    allow_origins=[origin.strip() for origin in settings.frontend_origin.split(",") if origin.strip()],
     allow_credentials=True,
     allow_methods=["POST", "GET"],
     allow_headers=["*"],

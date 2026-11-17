@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     groq_api_key: str
     groq_model: str = "openai/gpt-oss-120b"
-    frontend_origin: str = "http://localhost:3000"
+    frontend_origin: str = "http://localhost:3000,https://llm-resume-evaluator.vercel.app"
 
     model_config = SettingsConfigDict(
         env_file=Path(__file__).resolve().parent.parent / ".env",

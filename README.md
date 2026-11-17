@@ -34,10 +34,14 @@ Open `http://localhost:3000`. The backend expects `GROQ_API_KEY` in the root `.e
 
 ## Deployment
 
-Deploy `web` as the Vercel project root. Add this Vercel environment variable:
+The repository includes a root `vercel.json` that installs and builds the Next.js app from `web`. If the Vercel project has a Root Directory configured, set it to the repository root, not `web`.
+
+Add this Vercel environment variable:
 
 ```text
 NEXT_PUBLIC_API_URL=https://YOUR-API-DOMAIN.example.com
 ```
 
-Deploy `api` as a separate FastAPI service with `uvicorn api.main:app --host 0.0.0.0 --port $PORT`, and configure `GROQ_API_KEY`, `GROQ_MODEL`, and `FRONTEND_ORIGIN` there. Set `FRONTEND_ORIGIN` to the exact Vercel URL.
+Deploy `api` as a separate FastAPI service with `uvicorn api.main:app --host 0.0.0.0 --port $PORT`, and configure `GROQ_API_KEY`, `GROQ_MODEL`, and `FRONTEND_ORIGIN` there. Set `FRONTEND_ORIGIN` to the exact Vercel URL. The deployed frontend cannot call a backend running on localhost.
+
+For Render, use the included `render.yaml` Blueprint. Render will ask for the secret `GROQ_API_KEY` privately during service creation.
