@@ -5,8 +5,9 @@ FastAPI and Next.js application for comparing a PDF or DOCX resume with a target
 ### Structure
 
 ```text
-backend: main.py, schemas.py, parser.py, evaluator.py, settings.py
-frontend/
+api/
+  main.py, schemas.py, parser.py, evaluator.py, settings.py
+web/
   app/                 App Router page and global styles
   components/          Upload, score, keywords, audit, and rewrite UI
   lib/api.ts           Typed backend client
@@ -18,15 +19,25 @@ From the repository root:
 
 ```powershell
 uv sync
-uv run uvicorn main:app --reload --port 8001
+uv run uvicorn api.main:app --reload --port 8001
 ```
 
 In a second terminal:
 
 ```powershell
-cd frontend
+cd web
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. The backend expects `GROQ_API_KEY` in the root `.env` and defaults to the currently available `openai/gpt-oss-120b` model. Set `GROQ_MODEL` in `.env` to override it. Set `NEXT_PUBLIC_API_URL` when the API is running on another port.
+Open `http://localhost:3000`. The backend expects `GROQ_API_KEY` in the root `.env` and defaults to the currently available `openai/gpt-oss-120b` model. Set `GROQ_MODEL` in `.env` to override it.
+
+## Deployment
+
+Deploy `web` as the Vercel project root. Add this Vercel environment variable:
+
+```text
+NEXT_PUBLIC_API_URL=https://YOUR-API-DOMAIN.example.com
+```
+
+Deploy `api` as a separate FastAPI service with `uvicorn api.main:app --host 0.0.0.0 --port $PORT`, and configure `GROQ_API_KEY`, `GROQ_MODEL`, and `FRONTEND_ORIGIN` there. Set `FRONTEND_ORIGIN` to the exact Vercel URL.
