@@ -22,3 +22,9 @@ class MatchResult(BaseModel):
     missing_keywords: list[str]
     section_feedback: list[SectionAudit]
     bullet_rewrites: list[BulletImprovement]
+
+
+class CVClassification(BaseModel):
+    is_resume: bool
+    confidence: int = Field(ge=0, le=100)
+    reason: str = Field(min_length=10)

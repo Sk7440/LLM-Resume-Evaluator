@@ -1,10 +1,23 @@
 "use client";
 import { FileText, Upload, X } from "lucide-react";
+import { useState } from "react";
 
 export function Uploader({ file, onFile }: { file: File | null; onFile: (file: File | null) => void }) {
+  const [validationError, setValidationError] = useState("");
   const select = (candidate?: File) => {
     if (!candidate) return;
-    if (!["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(candidate.type) || candidate.size > 5 * 1024 * 1024) return;
+    const validType = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(candidate.type) ||
+      candidate.name.toLowerCase().endsWith(".pdf") ||
+      candidate.name.toLowerCase().endsWith(".docx");
+    if (!validType) {
+      setValidationError("Unsupported file. Upload a PDF or DOCX resume.");
+      return;
+    }
+    if (candidate.size > 5 * 1024 * 1024) {
+      setValidationError("This file is larger than 5 MB. Choose a smaller resume.");
+      return;
+    }
+    setValidationError("");
     onFile(candidate);
   };
   return <div>
@@ -16,5 +29,6 @@ export function Uploader({ file, onFile }: { file: File | null; onFile: (file: F
       <input className="sr-only" type="file" accept=".pdf,.docx" onChange={(event) => select(event.target.files?.[0])} />
       <span className="mb-3 rounded-full bg-white p-3 text-emerald-600 shadow-sm"><Upload size={20} /></span><span className="text-sm font-semibold">Drop your resume here or browse</span><span className="mt-1 text-xs text-slate-500">PDF or DOCX, up to 5 MB</span>
     </label>}
+    {validationError && <p role="alert" className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700">{validationError}</p>}
   </div>;
 }

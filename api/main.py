@@ -2,12 +2,12 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 try:
-    from .evaluator import evaluate_resume
+    from .evaluator import evaluate_resume, is_resume_document
     from .parser import extract_resume_text
     from .schemas import MatchResult
     from .settings import get_settings
 except ImportError:
-    from evaluator import evaluate_resume
+    from evaluator import evaluate_resume, is_resume_document
     from parser import extract_resume_text
     from schemas import MatchResult
     from settings import get_settings
@@ -40,6 +40,16 @@ async def evaluate(
 
     resume_text = await extract_resume_text(resume_file)
     try:
+        classification = is_resume_document(
+            resume_text,
+            settings.groq_api_key,
+            settings.groq_model,
+        )
+        if not classification.is_resume:
+            raise HTTPException(
+                status_code=400,
+                detail="This file does not appear to be a CV or resume. Check your file and upload a valid resume.",
+            )
         return evaluate_resume(
             resume_text,
             job_description.strip(),
