@@ -1,0 +1,5 @@
+import { ChevronDown } from "lucide-react";
+import type { MatchResult } from "../lib/api";
+export function SectionAudit({ audits }: { audits: MatchResult["section_feedback"] }) {
+  return <section><h2 className="mb-4 text-xl font-bold">Section audit</h2><div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">{audits.map((audit) => <details key={audit.section_name} className="group p-4" open><summary className="flex cursor-pointer list-none items-center justify-between"><span className="font-semibold">{audit.section_name}</span><span className="flex items-center gap-3"><span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${audit.status === "Strong" ? "bg-emerald-50 text-emerald-700" : audit.status === "Missing" ? "bg-rose-50 text-rose-700" : "bg-amber-50 text-amber-700"}`}>{audit.status}</span><ChevronDown size={16} className="text-slate-400 transition group-open:rotate-180" /></span></summary><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">{audit.actionable_fix}</p></details>)}</div></section>;
+}

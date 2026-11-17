@@ -1,2 +1,16 @@
 .env
 .venv
+__pycache__/
+@"
+# Node / Next.js
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.env
+"@ | Out-File -FilePath .gitignore -Encoding utf8
